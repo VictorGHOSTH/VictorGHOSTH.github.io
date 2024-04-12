@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Triángulos</title>
+</head>
+<body>
+
+<section class="form-register">
+    <h1>Calculadora de Triángulos</h1>
+    <form id="coordenadasForm">
+        <label for="x1">Coordenada x del vértice 1:</label>
+        <input class="controls" type="number" id="x1" name="x1" step="any" required>
+        <label for="y1">Coordenada y del vértice 1:</label>
+        <input class="controls" type="number" id="y1" name="y1" step="any" required><br><br>
+
+        <label for="x2">Coordenada x del vértice 2:</label>
+        <input class="controls" type="number" id="x2" name="x2" step="any" required>
+        <label for="y2">Coordenada y del vértice 2:</label>
+        <input class="controls" type="number" id="y2" name="y2" step="any" required><br><br>
+
+        <label for="x3">Coordenada x del vértice 3:</label>
+        <input class="controls" type="number" id="x3" name="x3" step="any" required>
+        <label for="y3">Coordenada y del vértice 3:</label>
+        <input class="controls" type="number" id="y3" name="y3" step="any" required><br><br>
+
+        <input class="controls" type="submit" value="Calcular">
+    </form>
+
+    <div id="resultado"></div>
+</section>
+
+<script>
+    document.getElementById('coordenadasForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        calcularTriangulo();
+    });
+
+    function calcularTriangulo() {
+        let x1 = parseFloat(document.getElementById('x1').value);
+        let y1 = parseFloat(document.getElementById('y1').value);
+        let x2 = parseFloat(document.getElementById('x2').value);
+        let y2 = parseFloat(document.getElementById('y2').value);
+        let x3 = parseFloat(document.getElementById('x3').value);
+        let y3 = parseFloat(document.getElementById('y3').value);
+
+        let lado1 = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        let lado2 = Math.sqrt(Math.pow(x3 - x2, 2) + Math.pow(y3 - y2, 2));
+        let lado3 = Math.sqrt(Math.pow(x1 - x3, 2) + Math.pow(y1 - y3, 2));
+
+        let perimetro = lado1 + lado2 + lado3;
+        let semiperimetro = perimetro / 2;
+        let area = Math.sqrt(semiperimetro * (semiperimetro - lado1) * (semiperimetro - lado2) * (semiperimetro - lado3));
+
+        let angulo1 = Math.acos((lado2 * lado2 + lado3 * lado3 - lado1 * lado1) / (2 * lado2 * lado3));
+        let angulo2 = Math.acos((lado1 * lado1 + lado3 * lado3 - lado2 * lado2) / (2 * lado1 * lado3));
+        let angulo3 = Math.acos((lado1 * lado1 + lado2 * lado2 - lado3 * lado3) / (2 * lado1 * lado2));
+
+        let tipoTriangulo;
+        if (lado1 === lado2 && lado2 === lado3) {
+            tipoTriangulo = "EQUILÁTERO";
+        } else if (lado1 === lado2 || lado1 === lado3 || lado2 === lado3) {
+            tipoTriangulo = "ISÓSCELES";
+        } else {
+            tipoTriangulo = "ESCALENO";
+        }
+
+        angulo1 = angulo1 * 180 / Math.PI;
+        angulo2 = angulo2 * 180 / Math.PI;
+        angulo3 = angulo3 * 180 / Math.PI;
+
+        let mensaje = `Tipo de triángulo: ${tipoTriangulo}<br>
+        Lado 1: ${lado1.toFixed(2)}<br>
+        Lado 2: ${lado2.toFixed(2)}<br>
+        Lado 3: ${lado3.toFixed(2)}<br>
+        Perímetro: ${perimetro.toFixed(2)}<br>
+        Área: ${area.toFixed(2)}<br>
+        Ángulo 1: ${angulo1.toFixed(2)} grados<br>
+        Ángulo 2: ${angulo2.toFixed(2)} grados<br>
+        Ángulo 3: ${angulo3.toFixed(2)} grados`;
+
+        document.getElementById("resultado").innerHTML = mensaje;
+    }
+</script>
+
+</body>
+</html>
